@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <style>
+        table.ex1 {
+          empty-cells: hide;
+        }
+        
+        table.ex2 {
+          empty-cells: show;
+        }
+        </style>
+
+<h1> Interactive emoji reaction board</h1>
+<button type="button" onclick="alert('lovely')">🥰</button>
+<button type="button" onclick="alert('Cool!')">😎</button>
+<button type="button" onclick="alert('hey!!')">😑</button>
+<h2>empty-cells: hide:</h2>
+<table class="ex1" border="1">
+  <tr>
+    <td>Inlove</td>
+    <td>Cool</td>
+  </tr>
+  <tr>
+    <td>Mad</td>
+    <td></td>
+  </tr>
+</table>
+
+<h2>empty-cells: show (default):</h2>
+<table class="ex2" border="1">
+  <tr>
+    <td>Inlove</td>
+    <td>Cool</td>
+  </tr>
+  <tr>
+    <td>Mad</td>
+    <td></td>
+  </tr>
+</table>
+
+</body>
+</html>
