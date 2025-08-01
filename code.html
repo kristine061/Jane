@@ -1,37 +1,183 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Quize me</title>
+
+  <title>Quiz Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #d0c6a8;
+    }
+
+    .quiz-container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #ffffff;
+      padding: 50px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    p {
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      border: 2px solid rgb(70, 60, 8);
+    }
+
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    .option {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border: 2px solid #999;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .option:hover {
+      background-color: #e0e0e0;
+    }
+
+    #feedback {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    #score {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
 
-  <h1> Quiz questions </h1>
+  <div class="quiz-container">
+    <h1>JavaScript and HTML Basics Quiz</h1>
 
-  <form action="form">
-    <p>
-        1. What is Your fav Color?
-    </p>
-    <input type="radio" id="age1" name="age" value="30">
-    <input type="radio" id="age1" name="age" value="30">
-    <input type="radio" id="age1" name="age" value="30">
-    <p>
-        2. How old Are you?
-    </p>
+    <div id="question-area"></div>
+    <div id="options-area"></div>
+    <div id="feedback"></div>
+    <div id="score"></div>
 
-     <p>
-        3. What year are u Now?
-     </p>
+    <button id="nextBtn" onclick="nextQuestion()" style="display: none;">Next</button>
+    <button id="restartBtn" onclick="restartQuiz()" style="display: none;">Restart Quiz</button>
+  </div>
 
-    <p>
+  <script>
+    const quizData = [
+      {
+        question: "1. What does JavaScript do in a web page?",
+        options: [
+        "a) It styles the page",
+        "b) It structures the content",
+        "c) It makes the page interactive"
+        ],
+        answer: 2
+      },
+      {
+        question: "2. Which tag is used to insert JavaScript code in an HTML file?",
+        options: [
+          "a) <js>",
+          "b) <script>",
+          "c) <javascript>"
+        ],
+        answer: 1
+      },
+      {
+        question: "3. What will this code display? alert(\"Hello!\");",
+        options: [
+          "a) Writes \"Hello!\" on the page",
+          "b) Shows a popup with \"Hello!\"",
+          "c) Nothing happens"
+        ],
+        answer: 1
+      }
+    ];
 
-      
-   
+    let current = 0;
+    let score = 0;
 
-    <button type="button" onclick="showAnswers()">Submit</button>
-  </form>
+function showQuestion() {
+      const q = quizData[current];
+      document.getElementById("question-area").innerHTML = `<p>${q.question}</p>`;
+      const optionsDiv = document.getElementById("options-area");
+      optionsDiv.innerHTML = "";
 
-  <div id="result"></div>
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(index);
+        optionsDiv.appendChild(btn);
+      });
 
- 
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("nextBtn").style.display = "none";
+    }
+function checkAnswer(selected) {
+      const correct = quizData[current].answer;
+      const feedback = document.getElementById("feedback");
+
+      if (selected === correct) {
+        feedback.textContent = "✅ Correct!";
+        score++;
+      } else {
+        feedback.textContent = "❌ Incorrect!";
+      }
+
+      document.getElementById("score").textContent = `Score: ${score} / ${quizData.length}`;
+      document.querySelectorAll(".option").forEach(btn => btn.onclick = null);
+      document.getElementById("nextBtn").style.display = "block";
+    }
+function nextQuestion() {
+      current++;
+      if (current < quizData.length) {
+        showQuestion();
+      } else {
+        endQuiz();
+      }
+    }
+function endQuiz() {
+      document.getElementById("question-area").innerHTML = `<p> Quiz Complete!</p>`;
+      document.getElementById("options-area").innerHTML = "";
+      document.getElementById("feedback").innerHTML = getFinalMessage();
+      document.getElementById("nextBtn").style.display = "none";
+      document.getElementById("restartBtn").style.display = "block";
+    }
+function getFinalMessage() {
+      if (score === quizData.length) {
+        return "🎉 Great job! You got all answers right!";
+      } else if (score === quizData.length - 1) {
+        return "😊 Almost perfect! Keep it up!";
+      } else {
+        return "💡 Keep practicing and try again!";
+      }
+    }
+function restartQuiz() {
+      current = 0;
+      score = 0;
+      document.getElementById("score").textContent = "";
+      document.getElementById("restartBtn").style.display = "none";
+      showQuestion();
+    }
+
+    showQuestion();
+  </script>
+
 </body>
 </html>
+
